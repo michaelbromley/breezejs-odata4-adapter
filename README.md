@@ -35,7 +35,7 @@ breeze.config.initializeAdapterInstance('dataService', 'ODataV4', true);
 The adapter also assumes that promises are available either because AngularJS has been included or the window.Q object exists. My app is an AngularJS so I am only testing it out
 in that context right now.
 
-* the `-mod` on the end of the filename indicates that I have also hacked this library (line 2089) in order to get batch requests to work. I'm not sure if this is due to a bug in
+\* the `-mod` on the end of the filename indicates that I have also hacked this library (line 2089) in order to get batch requests to work. I'm not sure if this is due to a bug in
 the Olingo implementation of the protocol, or some oversight on my part in how to use the library.
 
 ## Progress
