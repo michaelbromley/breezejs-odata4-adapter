@@ -4,7 +4,7 @@
  * Created by Michael on 05/11/2014.
  */
 (function (factory) {
-    if (breeze) {
+  if (typeof breeze === "object") {
         factory(breeze);
     } else if (typeof require === "function" && typeof exports === "object" && typeof module === "object") {
         // CommonJS or Node: hard-coded dependency on "breeze"
@@ -25,7 +25,7 @@
 
     var Q = window.Q || angular.injector(['ng']).get('$q');
 
-    var ctor = function () {
+    var ctor = function DataServiceODataAdapter() {
         this.name = "ODataV4";
     };
 
@@ -80,7 +80,7 @@
         var serviceName = dataService.serviceName;
         var url = dataService.qualifyUrl('$metadata');
         // OData.read(url,
-        odatajs.read({
+        odatajs.oData.read({
                 requestUri: url,
                 // headers: { "Accept": "application/json"}
                 headers: { Accept: 'application/json;odata.metadata=full' }
@@ -121,7 +121,7 @@
 
     proto.getRoutePrefix = function (/*dataService*/) {
         return '';
-    } // see webApiODataCtor
+    }; // see webApiODataCtor
 
     proto.saveChanges = function (saveContext, saveBundle) {
         var adapter = saveContext.adapter = this;
@@ -195,9 +195,9 @@
 
         visitNode: function (node, mappingContext, nodeContext) {
             var result = {};
-            if (node == null) return result;
+            if (node === null) return result;
             var etag = node['@odata.etag'];
-            if (etag != null) {
+            if (etag !== null) {
                 var entityTypeName;
                 if (nodeContext.nodeType === 'root') {
                     entityTypeName = mappingContext.entityManager.metadataStore.getEntityTypeNameForResourceName(mappingContext.query.resourceName);
@@ -224,7 +224,7 @@
                     result.extraMetadata = {
                         //uriKey: uriKey,
                         etag: etag
-                    }
+                    };
                 }
             }
             // OData v3 - projection arrays will be enclosed in a results array
@@ -233,7 +233,7 @@
             }
 
             var propertyName = nodeContext.propertyName;
-            result.ignore = node.__deferred != null || propertyName === "__metadata" ||
+            result.ignore = node.__deferred !== null || propertyName === "__metadata" ||
                 // EntityKey properties can be produced by EDMX models
             (propertyName === "EntityKey" && node.$type && core.stringStartsWith(node.$type, "System.Data"));
             return result;
@@ -248,7 +248,7 @@
             // from other dateTimes. This fix compensates before the save.
             val = val && new Date(val.getTime() - (val.getTimezoneOffset() * 60000));
         } else if (prop.dataType.quoteJsonOData) {
-            val = val != null ? val.toString() : val;
+            val = val !== null ? val.toString() : val;
         }
         return val;
     }
@@ -304,11 +304,11 @@
     function updateDeleteMergeRequest(request, aspect, routePrefix) {
         var uriKey;
         var extraMetadata = aspect.extraMetadata;
-        if (extraMetadata == null) {
+        if (extraMetadata === null) {
             uriKey = getUriKey(aspect);
             aspect.extraMetadata = {
                 uriKey: uriKey
-            }
+            };
         } else {
             uriKey = extraMetadata.uriKey || getUriKey(aspect);
             if (extraMetadata.etag) {
@@ -419,7 +419,7 @@
 
     var webApiODataCtor = function () {
         this.name = "webApiOData";
-    }
+    };
 
     breeze.core.extend(webApiODataCtor.prototype, proto);
 
@@ -429,8 +429,9 @@
         // Examples of servicename -> routePrefix:
         //   'http://localhost:55802/odata/' -> 'odata/'
         //   'http://198.154.121.75/service/odata/' -> 'service/odata/'
+        var parser;
         if (typeof document === 'object') { // browser
-            var parser = document.createElement('a');
+            parser = document.createElement('a');
             parser.href = dataService.serviceName;
         } else { // node
             parser = url.parse(dataService.serviceName);
@@ -449,7 +450,7 @@
     // OData 4 adapter
     var webApiOData4Ctor = function () {
         this.name = "webApiOData4";
-    }
+    };
     breeze.core.extend(webApiOData4Ctor.prototype, webApiODataCtor.prototype);
     webApiOData4Ctor.prototype.initialize = function () {
         // Aargh... they moved the cheese.
