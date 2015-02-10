@@ -22,7 +22,7 @@ If you are brave and want to give it a go, I have written it in such a way that 
 
 Include the JavaScript files in the following order:
 
-1. odatajs-4.0.0-beta-01-mod.js*
+1. odatajs-4.0.0-beta-01.js*
 2. breeze.js
 3. breezeOdataV4Adapter.js
 
