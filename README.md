@@ -1,3 +1,7 @@
+## No Longer Maintained
+
+I am not maintaining this project or developing it further. For a more up-to-date fork, see https://github.com/tschettler/breezejs-odata4-adapter
+
 # BreezeJS OData v4 Adapter
 
 This is an experimental adapter to allow [BreezeJS](http://www.getbreezenow.com/) to communicate with a server that is using version 4 of the OData protocol.
